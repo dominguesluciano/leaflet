@@ -1,6 +1,6 @@
 //get data
 var queryUrl = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson';
-//var geojson;
+// var geojson;
 
 // Perform a GET request to the query URL
 d3.json(queryUrl, function(data) {
@@ -16,55 +16,31 @@ function createFeatures(earthquakeData) {
   layer.bindPopup("<h3>" + feature.properties.place + "</h3><hr><p>" + new Date(feature.properties.time) + "</p>" + feature.properties.MHI2016);
   
   }
-  function radiusSize(magnitude) {
-    return magnitude * 4;
-  }
 
-  // Define function to set the circle color based on the magnitude
-  function circleColor(magData) {
-    if (magData < 1) {
-      return 'rgb(183,243,77)'
-    }
-    else if (magData < 2) {
-      return 'rgb(225,243,77)'
-    }
-    else if (magData < 3) {
-      return 'rgb(243,219,77)'
-    }
-    else if (magData < 4) {
-      return 'rgb(243,186,77)'
-    }
-    else if (magData < 5) {
-      return 'rgb(240,167,107)'
-    }
-    else {
-      return 'rgb(240,107,107)'
-    }
-  }
   // Create a GeoJSON layer containing the features array on the earthquakeData object
   // Run the onEachFeature function once for each piece of data in the array
-  var earthquakes = L.geoJSON(earthquakeData, {
+  var earthquakes = L.geoJSON(earthquakeData,{
       pointToLayer: function(feature, latlng) {
-        return new L.CircleMarker(latlng, {
-        radius: radiusSize(feature.properties.mag),
-        color: circleColor(feature.properties.mag),
-          fillColor: circleColor(feature.properties.mag),
+        return new L.CircleMarker(latlng,{
+          radius: feature.properties.mag*3,
+          color: 'yellow',
+          fillColor: "yellow",
           weight: 1,
           opacity: 1,
           fillOpacity: 1
         });
       },
       onEachFeature: onEachFeature
-        });
-
-
-    // Sending our earthquakes layer to the createMap function
+  });
+     
+  
+  // Sending our earthquakes layer to the createMap function
   createMap(earthquakes);
-}
+}  
 
 function createMap(earthquakes) {
 
-// Create legend
+  // Define lightmap layer
   var lightmap = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
     attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
     maxZoom: 18,
@@ -99,8 +75,23 @@ function createMap(earthquakes) {
     collapsed: false
   }).addTo(myMap);
 
+  // Create legend
+  var legend = L.control({position: 'bottomright'});
+  legend.onAdd = function (map) {
+  var div = L.DomUtil.create('div', 'info legend'),
+              grades = [0, 1, 2, 3, 4, 5],
+              labels = [];
+  // loop through density intervals and generate a label with a colored square for each interval
+  for (var i = 0; i < grades.length; i++) {
+      div.innerHTML +=
+          '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+          grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+  }
+  return div;
+  };
+  legend.addTo(map);
 }
-// Define lightmap layer
+
 ////////////
  ///////choropleth
 //  function choroplethThing(data){
