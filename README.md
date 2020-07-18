@@ -14,7 +14,10 @@ A interactve map using Leaflet to plot all of the earthquakes from a data set ba
 
 ### Deployment
 
-The dashboard can be visualized in any browser. Just download the files and run locally. 
+The map can be visualized in this github page: https://bit.ly/3978bE1
+Or in any browser. Just download the files and run locally. 
+
+
 
 #### About the Data
 
