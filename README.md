@@ -3,7 +3,8 @@
 
 
 ### Synopsis
-A interactve map using Leaflet to plot all of the earthquakes from a data set based on their longitude, latitude and magnitude. In this map the user can switch between three different types of maps and quickly understand which earthquakes have the highest magnitude by the circle's color and size. 
+An interactive map using Leaflet and Mapbox to plot earthquakes location and seismic intensity of the last 7 days by longitude, latitude and magnitude. In this map the user can switch between three different types of maps and quickly understand which earthquakes have the highest magnitude by the circle's color and size. 
+
 
 ### Visualizations
 
